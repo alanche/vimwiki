@@ -158,7 +158,6 @@ function! vimwiki#base#resolve_link(link_text, ...)
           let ext_len = strlen(vimwiki#vars#get_wikilocal('ext'))
           let link_text = fnamemodify(source_file, ':p:t')[:-ext_len-1]
       endif
-
     endif
   endif
 
@@ -209,7 +208,9 @@ function! vimwiki#base#resolve_link(link_text, ...)
           \ link_text .
           \ vimwiki#vars#get_wikilocal('ext', link_infos.index)
   elseif (link_infos.scheme ==# 'file' || link_infos.scheme ==# 'local') && is_relative
-    let link_infos.filename = simplify(root_dir . link_text)
+    " let link_infos.filename = simplify(root_dir . link_text)
+    " Alan: keep the text in the generated HTML.
+    let link_infos.filename = link_text
   else " absolute file link
     " collapse repeated leading "/"'s within a link
     let link_text = substitute(link_text, '\m^/\+', '/', '')
