@@ -263,7 +263,8 @@ function! vimwiki#base#system_open_link(url)
   endfunction
   try
     if vimwiki#u#is_windows()
-      call s:win32_handler(a:url)
+      let url = substitute(a:url,'^//','','')
+      call s:win32_handler(url)
       return
     elseif vimwiki#u#is_macos()
       call s:macunix_handler(a:url)
