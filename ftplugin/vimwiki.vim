@@ -697,3 +697,27 @@ if vimwiki#vars#get_wikilocal('auto_tags')
   augroup END
 endif
 
+nnoremap <buffer> <F5> :Vimwiki2HTMLBrowse<CR>
+
+" Insert vimwiki links to include the clipboard images.
+function! InsertImages()
+  let home = substitute(g:home,"\\","/","g")."/HOME"
+  let fname = strftime("%Y%m%d_%H%M%S").".png"
+  let full_fname = home . "/wiki_images/". fname
+  if  expand("%") =~ 'diary'
+    let @c = "{{local:../../wiki_images/".fname."}}"
+  else
+    let @c = "{{local:../wiki_images/".fname."}}"
+  endif
+  let @e = "ERROR"
+  let cmd = "python ".g:home."/sites/vimwiki/ftplugin/savClipBoard.py ".full_fname
+  let out = system(cmd)
+  if out =~ 'OK'
+    put c
+  else
+    let @e = cmd.":".out
+    put e
+  endif
+endfunction
+nnoremap <silent> <buffer> <Leader>wm :call InsertImages()<CR>
+nmap <silent><buffer> <F3> <Plug>VimwikiToggleListItem
