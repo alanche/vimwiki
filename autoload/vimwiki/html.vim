@@ -803,13 +803,16 @@ function! s:process_tag_pre(line, pre)
   "if !pre[0] && a:line =~# '^\s*{{{[^\(}}}\)]*\s*$'
   if !pre[0] && a:line =~# '^\s*{{{'
     let class = matchstr(a:line, '{{{\zs.*$')
-    "FIXME class cannot contain arbitrary strings
     let class = substitute(class, '\s\+$', '', 'g')
-    if class != ""
-      call add(lines, "<pre ".class.">")
-    else
-      call add(lines, "<pre>")
+    if class =~ '^\w\+$' " simple word, treat as class.
+      let class = 'class="'.class.'"'
     endif
+    if class =~ 'class\s*=\s*"'
+      let class = substitute(class,'class="','class="code ','')
+    else
+      let class = class . ' class="code" '
+    endif
+    call add(lines, "<pre ".class.">")
     let pre = [1, len(matchstr(a:line, '^\s*\ze{{{'))]
     let processed = 1
   elseif pre[0] && a:line =~# '^\s*}}}\s*$'
