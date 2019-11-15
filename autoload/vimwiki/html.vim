@@ -412,7 +412,7 @@ function! s:tag_wikiincl(value)
     if link_infos.scheme =~# '\mlocal\|wiki\d\+\|diary'
       "let url = vimwiki#path#relpath(fnamemodify(s:current_html_file, ':h'), link_infos.filename)
       " Alan: please do not modify the link urls it is copied from wiki as is.
-      let url = link_infos.filename
+      let url = link_infos.link_text
       " strip the .html extension when we have wiki links, so that the user can
       " simply write {{image.png}} to include an image from the wiki directory
       if link_infos.scheme =~# '\mwiki\d\+\|diary'
