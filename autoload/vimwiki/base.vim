@@ -140,7 +140,7 @@ function! vimwiki#base#resolve_link(link_text, ...)
       return link_infos
     endif
 
-    let link_text = matchstr(link_text, '^'.vimwiki#vars#get_global('rxSchemes').':\zs.*\ze')
+    let link_text = matchstr(link_text, '^'.vimwiki#vars#get_global('rxSchemes').':\(//\)\?\zs.*\ze')
   endif
 
   let is_wiki_link = link_infos.scheme =~# '\mwiki\d\+' || link_infos.scheme ==# 'diary'
@@ -263,8 +263,7 @@ function! vimwiki#base#system_open_link(url)
   endfunction
   try
     if vimwiki#u#is_windows()
-      let url = substitute(a:url,'^//','','')
-      call s:win32_handler(url)
+      call s:win32_handler(a:url)
       return
     elseif vimwiki#u#is_macos()
       call s:macunix_handler(a:url)

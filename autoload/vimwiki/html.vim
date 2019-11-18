@@ -450,6 +450,9 @@ function! s:tag_wikilink(value)
     if link_infos.scheme ==# 'file'
       " external file links are always absolute
       let html_link = link_infos.filename
+      if html_link !~ '^//'
+        let html_link = '//'.html_link
+      endif
     elseif link_infos.scheme ==# 'local'
       let html_link = vimwiki#path#relpath(fnamemodify(s:current_html_file, ':h'),
             \ link_infos.filename)
