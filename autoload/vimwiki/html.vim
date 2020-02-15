@@ -1085,7 +1085,8 @@ function! s:process_tag_h(line, id)
 
     else
 
-      let h_part = '<h1 id="'.h_id.'" class="toc">'
+      let c = centered ? 'toc justcenter' : 'toc'
+      let h_part = '<h1 id="'.h_id.'" class="'.c.'">'
 
     endif
 
