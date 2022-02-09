@@ -377,7 +377,7 @@ endfunction
 
 function! s:linkify_image(src, descr, verbatim_str)
   let src_str = ' src="'.a:src.'"'
-  let descr_str = (a:descr != '' ? ' alt="'.a:descr.'"' : '')
+  let descr_str = (a:descr != '' ? ' title="'.a:descr.'" alt="'.a:descr.'"' : '')
   let verbatim_str = (a:verbatim_str != '' ? ' '.a:verbatim_str : '')
   return '<img'.src_str.descr_str.verbatim_str.' />'
 endfunction
