@@ -67,6 +67,7 @@ endfunction
 function! s:read_captions(files)
   let result = {}
   let rx_header = vimwiki#vars#get_syntaxlocal('rxHeader')
+  let rx_header = '\%('. rx_header . '\)\|\%(^%title \zs.\+$\)'
   for fl in a:files
     " remove paths and extensions
     let fl_key = substitute(fnamemodify(fl, ':t'), vimwiki#vars#get_wikilocal('ext').'$', '', '')
