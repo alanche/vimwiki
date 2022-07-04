@@ -238,7 +238,7 @@ syntax match VimwikiTableRow /^\s*|.\+|\s*$/
                            \ VimwikiLinkT,
                            \ VimwikiNoExistsLinkT,
                            \ VimwikiTodo,
-                           \ VimwikiBoldT,
+                           \ VimwikiBold,
                            \ VimwikiItalicT,
                            \ VimwikiBoldItalicT,
                            \ VimwikiItalicBoldT,
