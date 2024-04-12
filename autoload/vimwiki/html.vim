@@ -905,7 +905,7 @@ function! s:process_tag_list(line, lists)
         let st_tag = '<li class="done'.completion.'">'
       endif
     endif
-    return [st_tag, '']
+    return [st_tag, '</li>']
   endfunction
 
 
@@ -923,6 +923,7 @@ function! s:process_tag_list(line, lists)
 
   let lines = []
   let processed = 0
+  let indent = 0
 
   if a:line =~# '^\s*'.s:bullets.'\s'
     let lstSym = matchstr(a:line, s:bullets)
@@ -983,7 +984,7 @@ function! s:process_tag_list(line, lists)
   else
     call s:close_tag_list(a:lists, lines)
   endif
-  return [processed, lines]
+  return [processed, lines,indent]
 endfunction
 
 
@@ -1112,7 +1113,7 @@ function! s:process_tag_hr(line)
 endfunction
 
 
-function! s:process_tag_table(line, table, header_ids)
+function! s:process_tag_table(line, table, header_ids,indent)
   function! s:table_empty_cell(value)
     let cell = {}
 
@@ -1137,10 +1138,15 @@ function! s:process_tag_table(line, table, header_ids)
     return cell
   endfunction
 
-  function! s:table_add_row(table, line)
+  function! s:table_add_row(table, line,indent)
     if empty(a:table)
       if a:line =~# '^\s\+'
-        let row = ['center', []]
+        " the table in list start at 2 space indent is not treat as center
+        if (a:indent + 2) == stridx(a:line,'|') 
+          let row = ['normal', []]
+        else
+          let row = ['center', []]
+        end
       else
         let row = ['normal', []]
       endif
@@ -1155,10 +1161,10 @@ function! s:process_tag_table(line, table, header_ids)
   let processed = 0
 
   if vimwiki#tbl#is_separator(a:line)
-    call extend(table, s:table_add_row(a:table, a:line))
+    call extend(table, s:table_add_row(a:table, a:line,a:indent))
     let processed = 1
   elseif vimwiki#tbl#is_table(a:line)
-    call extend(table, s:table_add_row(a:table, a:line))
+    call extend(table, s:table_add_row(a:table, a:line,a:indent))
 
     let processed = 1
     " let cells = split(a:line, vimwiki#tbl#cell_splitter(), 1)[1: -2]
@@ -1168,7 +1174,7 @@ function! s:process_tag_table(line, table, header_ids)
   else
     let table = s:close_tag_table(table, lines, a:header_ids)
   endif
-  return [processed, lines, table]
+  return [processed, lines, table,a:indent]
 endfunction
 
 
@@ -1183,6 +1189,7 @@ function! s:parse_line(line, state)
   let state.deflist = a:state.deflist
   let state.placeholder = a:state.placeholder
   let state.header_ids = a:state.header_ids
+  let state.indent = a:state.indent
 
   let res_lines = []
 
@@ -1260,14 +1267,14 @@ function! s:parse_line(line, state)
 
   " tables
   if !processed
-    let [processed, lines, state.table] = s:process_tag_table(line, state.table, state.header_ids)
+    let [processed, lines, state.table,state.indent] = s:process_tag_table(line, state.table, state.header_ids,state.indent)
     call extend(res_lines, lines)
   endif
 
 
   " lists
   if !processed
-    let [processed, lines] = s:process_tag_list(line, state.lists)
+    let [processed, lines,state.indent] = s:process_tag_list(line, state.lists)
     if processed && state.quote
       let state.quote = s:close_tag_quote(state.quote, lines)
     endif
@@ -1467,6 +1474,7 @@ function! s:convert_file(path_html, wikifile)
     let state.table = []
     let state.deflist = 0
     let state.lists = []
+    let state.indent = 0
     let state.placeholder = []
     let state.header_ids = [['', 0], ['', 0], ['', 0], ['', 0], ['', 0], ['', 0]]
          " [last seen header text in this level, number]

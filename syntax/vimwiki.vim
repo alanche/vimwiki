@@ -235,7 +235,7 @@ execute 'syntax match VimwikiTodo /'. vimwiki#vars#get_global('rxTodo') .'/'
 " Tables
 syntax match VimwikiTableRow /^\s*|.\+|\s*$/ 
       \ transparent contains=VimwikiCellSeparator,
-                           \ VimwikiLinkT,
+                           \ VimwikiLink,
                            \ VimwikiNoExistsLinkT,
                            \ VimwikiTodo,
                            \ VimwikiBold,
