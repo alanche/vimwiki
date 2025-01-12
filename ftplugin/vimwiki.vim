@@ -790,7 +790,7 @@ function! InsertImages()
     let @c = '{{local:../wiki_images/'.fname.'}}'
   endif
   let @e = 'ERROR'
-  let cmd = 'python '.g:home.'/sites/vimwiki/ftplugin/savClipBoard.py '.full_fname
+  let cmd = 'python '.g:home.'/sites/vimwiki/ftplugin/saveClipBoard.py '.full_fname
   let out = system(cmd)
   if out =~# 'OK'
     put c
