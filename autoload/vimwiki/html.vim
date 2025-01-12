@@ -453,8 +453,8 @@ endfunction
 
 function! s:linkify_image(src, descr, verbatim_str) abort
   let src_str = ' src="'.a:src.'"'
-  let descr_str = (a:descr != '' ? ' title="'.a:descr.'" alt="'.a:descr.'"' : '')
-  let verbatim_str = (a:verbatim_str != '' ? ' '.a:verbatim_str : '')
+  let descr_str = (a:descr !=# '' ? ' title="'.a:descr.'" alt="'.a:descr.'"' : '')
+  let verbatim_str = (a:verbatim_str !=# '' ? ' '.a:verbatim_str : '')
   return '<img'.src_str.descr_str.verbatim_str.' />'
 endfunction
 
@@ -526,7 +526,7 @@ function! s:tag_wikilink(value) abort
     if link_infos.scheme ==# 'file'
       " external file links are always absolute
       let html_link = link_infos.filename
-      if html_link !~ '^//'
+      if html_link !~# '^//'
         let html_link = '//'.html_link
       endif
     elseif link_infos.scheme ==# 'local'
@@ -895,15 +895,15 @@ function! s:process_tag_pre(line, pre) abort
   if !pre[0] && a:line =~# '^\s*{{{'
     let class = matchstr(a:line, '{{{\zs.*$')
     let class = substitute(class, '\s\+$', '', 'g')
-    if class =~ '^\w\+$' " simple word, treat as class.
+    if class =~? '^\w\+$' " simple word, treat as class.
       let class = 'class="'.class.'"'
     endif
-    if class =~ 'class\s*=\s*"'
+    if class =~# 'class\s*=\s*"'
       let class = substitute(class,'class="','class="code ','')
     else
       let class = class . ' class="code" '
     endif
-    call add(lines, "<pre ".class.">")
+    call add(lines, '<pre '.class.'>')
     let pre = [1, len(matchstr(a:line, '^\s*\ze{{{'))]
     let processed = 1
   elseif pre[0] && a:line =~# '^\s*}}}\s*$'

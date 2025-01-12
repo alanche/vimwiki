@@ -781,21 +781,21 @@ nnoremap <buffer> <F5> :Vimwiki2HTMLBrowse<CR>
 
 " Insert vimwiki links to include the clipboard images.
 function! InsertImages()
-  let home = substitute(g:home,"\\","/","g")."/HOME"
-  let fname = strftime("%Y%m%d_%H%M%S").".png"
-  let full_fname = home . "/wiki_images/". fname
-  if  expand("%") =~ 'diary'
-    let @c = "{{local:../../wiki_images/".fname."}}"
+  let home = substitute(g:home,'\','/','g').'/HOME'
+  let fname = strftime('%Y%m%d_%H%M%S').'.png'
+  let full_fname = home . '/wiki_images/'. fname
+  if  expand("%") =~# 'diary'
+    let @c = '{{local:../../wiki_images/'.fname.'}}'
   else
-    let @c = "{{local:../wiki_images/".fname."}}"
+    let @c = '{{local:../wiki_images/'.fname.'}}'
   endif
-  let @e = "ERROR"
-  let cmd = "python ".g:home."/sites/vimwiki/ftplugin/savClipBoard.py ".full_fname
+  let @e = 'ERROR'
+  let cmd = 'python '.g:home.'/sites/vimwiki/ftplugin/savClipBoard.py '.full_fname
   let out = system(cmd)
-  if out =~ 'OK'
+  if out =~# 'OK'
     put c
   else
-    let @e = cmd.":".out
+    let @e = cmd.':'.out
     put e
   endif
 endfunction
