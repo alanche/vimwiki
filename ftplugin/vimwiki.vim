@@ -784,7 +784,7 @@ function! InsertImages()
   let home = substitute(g:home,'\','/','g').'/HOME'
   let fname = strftime('%Y%m%d_%H%M%S').'.png'
   let full_fname = home . '/wiki_images/'. fname
-  if  expand("%") =~# 'diary'
+  if  expand('%') =~# 'diary'
     let @c = '{{local:../../wiki_images/'.fname.'}}'
   else
     let @c = '{{local:../wiki_images/'.fname.'}}'
