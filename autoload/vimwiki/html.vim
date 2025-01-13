@@ -810,7 +810,8 @@ function! s:process_tag_pre(line, pre)
     if class =~ '^\w\+$' " simple word, treat as class.
       let class = 'class="'.class.'"'
     endif
-    if class =~ 'class\s*=\s*"'
+    if class =~ 'mermaid'
+    elseif class =~ 'class\s*=\s*"'
       let class = substitute(class,'class="','class="code ','')
     else
       let class = class . ' class="code" '
@@ -917,7 +918,7 @@ function! s:process_tag_list(line, lists)
   if !in_list
     let pos = match(a:line, '^\s*'.vimwiki#vars#get_syntaxlocal('rxBold'))
     if pos != -1
-      return [0, []]
+      return [0, [],0]
     endif
   endif
 
