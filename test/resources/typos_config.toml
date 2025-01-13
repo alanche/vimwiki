@@ -1,0 +1,6 @@
+files.extend-exclude = ["test", "autoload/vimwiki/emoji.vim",  "doc/vimwiki-emoji.txt","autoload/vimwiki/jquery-1.12.4.min.js","autoload/vimwiki/highlight.pack.js","ftplugin/savClipboard.py"]
+
+[default.extend-words]
+# For the fo-table
+fo = "fo"
+Gude = "Gude"

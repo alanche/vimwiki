@@ -1,4 +1,4 @@
-// self-developped vimwiki page utilities by Alan Che 2022-2-9
+// self-developed vimwiki page utilities by Alan Che 2022-2-9
 // The Generated vimwiki html page leverage this to:
 // set heading number
 // show up the title in the front page center
