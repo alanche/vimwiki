@@ -132,6 +132,7 @@ endfunction
 function! s:get_first_header(fl) abort
   " Get the first header in the file within the first s:vimwiki_max_scan_for_caption lines.
   let header_rx = vimwiki#vars#get_syntaxlocal('rxHeader')
+  let header_rx = '\%('. header_rx . '\)\|\%(^%title \zs.\+$\)'
 
   for line in readfile(a:fl, '', g:vimwiki_max_scan_for_caption)
     if line =~# header_rx
